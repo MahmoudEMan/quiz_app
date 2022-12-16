@@ -29,14 +29,7 @@ const Header = () => {
             fontFamily: "'Marhey', cursive",
           }}
         >
-          <div
-            style={{
-              color: "rgb(240,166,36)",
-              fontFamily: "'Marhey', cursive",
-            }}
-          >
-            ل
-          </d>
+          <div style={{ color: "rgb(240,166,36)" }}>ل</div>
           <div style={{ color: "rgb(42,87,128)" }}>ع</div>
           <div style={{ color: "rgb(178,87,85)" }}>ب</div>
           <div style={{ color: "rgb(145,181,119)" }}>ة </div>
@@ -44,15 +37,15 @@ const Header = () => {
           <div style={{ color: "rgb(42,87,128)" }}>ل</div>
           <div style={{ color: "rgb(178,87,85)" }}>ب</div>
           <div style={{ color: "rgb(145,181,119)" }}>ي</div>
-          <div style={{ color: "rgb(240,166,36)" }}>ر</d>
-          <div style={{ color: "rgb(42,87,128)" }}>و</d>
-          <div style={{ color: "rgb(178,87,85)" }}>ن</d>
-          <div style={{ color: "rgb(145,181,119)" }}>ي </d>
-          <div style={{ color: "rgb(240,166,36)" }}>ال</d>
-          <div style={{ color: "rgb(42,87,128)" }}>ص</d>
-          <div style={{ color: "rgb(178,87,85)" }}>غ</d>
-          <div style={{ color: "rgb(145,181,119)" }}>ي</d>
-          <div style={{ color: "rgb(145,181,119)" }}>ر</d>
+          <div style={{ color: "rgb(240,166,36)" }}>ر</div>
+          <div style={{ color: "rgb(42,87,128)" }}>و</div>
+          <div style={{ color: "rgb(178,87,85)" }}>ن</div>
+          <div style={{ color: "rgb(145,181,119)" }}>ي </div>
+          <div style={{ color: "rgb(240,166,36)" }}>ال</div>
+          <div style={{ color: "rgb(42,87,128)" }}>ص</div>
+          <div style={{ color: "rgb(178,87,85)" }}>غ</div>
+          <div style={{ color: "rgb(145,181,119)" }}>ي</div>
+          <div style={{ color: "rgb(145,181,119)" }}>ر</div>
 
           {/* لعبة البيرونى الصغير */}
         </h1>
