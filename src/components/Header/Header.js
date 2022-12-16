@@ -24,35 +24,35 @@ const Header = () => {
         style={{}}
       >
         <h1
-          className="text-6xl lg:text-7xl mb-16 arl text-center"
+          className={`text-6xl lg:text-7xl mb-16 arl text-center ${styles.main_title}`}
           style={{
             fontFamily: "'Marhey', cursive",
           }}
         >
-          <span
+          <div
             style={{
               color: "rgb(240,166,36)",
               fontFamily: "'Marhey', cursive",
             }}
           >
             ل
-          </span>
-          <span style={{ color: "rgb(42,87,128)" }}>ع</span>
-          <span style={{ color: "rgb(178,87,85)" }}>ب</span>
-          <span style={{ color: "rgb(145,181,119)" }}>ة </span>
-          <span style={{ color: "rgb(240,166,36)" }}>ا</span>
-          <span style={{ color: "rgb(42,87,128)" }}>ل</span>
-          <span style={{ color: "rgb(178,87,85)" }}>ب</span>
-          <span style={{ color: "rgb(145,181,119)" }}>ي</span>
-          <span style={{ color: "rgb(240,166,36)" }}>ر</span>
-          <span style={{ color: "rgb(42,87,128)" }}>و</span>
-          <span style={{ color: "rgb(178,87,85)" }}>ن</span>
-          <span style={{ color: "rgb(145,181,119)" }}>ي </span>
-          <span style={{ color: "rgb(240,166,36)" }}>ال</span>
-          <span style={{ color: "rgb(42,87,128)" }}>ص</span>
-          <span style={{ color: "rgb(178,87,85)" }}>غ</span>
-          <span style={{ color: "rgb(145,181,119)" }}>ي</span>
-          <span style={{ color: "rgb(145,181,119)" }}>ر</span>
+          </d>
+          <div style={{ color: "rgb(42,87,128)" }}>ع</div>
+          <div style={{ color: "rgb(178,87,85)" }}>ب</div>
+          <div style={{ color: "rgb(145,181,119)" }}>ة </div>
+          <div style={{ color: "rgb(240,166,36)" }}>ا</div>
+          <div style={{ color: "rgb(42,87,128)" }}>ل</div>
+          <div style={{ color: "rgb(178,87,85)" }}>ب</div>
+          <div style={{ color: "rgb(145,181,119)" }}>ي</div>
+          <div style={{ color: "rgb(240,166,36)" }}>ر</d>
+          <div style={{ color: "rgb(42,87,128)" }}>و</d>
+          <div style={{ color: "rgb(178,87,85)" }}>ن</d>
+          <div style={{ color: "rgb(145,181,119)" }}>ي </d>
+          <div style={{ color: "rgb(240,166,36)" }}>ال</d>
+          <div style={{ color: "rgb(42,87,128)" }}>ص</d>
+          <div style={{ color: "rgb(178,87,85)" }}>غ</d>
+          <div style={{ color: "rgb(145,181,119)" }}>ي</d>
+          <div style={{ color: "rgb(145,181,119)" }}>ر</d>
 
           {/* لعبة البيرونى الصغير */}
         </h1>
