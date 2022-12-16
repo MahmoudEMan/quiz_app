@@ -17,11 +17,15 @@ const Levels = () => {
   return (
     <div
       dir="rtl"
-      className={`fadeIn flex p-8 ${fadeOutAnim ? "fadeOut" : ""}`}
+      className={`fadeIn flex p-8  ${fadeOutAnim ? "fadeOut" : ""}`}
       style={{ backgroundColor: "rgb(244 236 225)" }}
     >
-      <div className="flex-1 p-4 relative">
-        <img className="absolute top-0 left-0 w-40" src={ills1} alt="" />
+      <div className=" p-4 relative lg:w-1/2 mx-auto">
+        <img
+          className="absolute top-0 left-0 w-40 opacity-50 "
+          src={ills1}
+          alt=""
+        />
         <h2 className="arl text-2xl text-center mb-6 font-semibold">
           جمع الأعداد وطرحها
         </h2>
@@ -34,10 +38,10 @@ const Levels = () => {
             className="w-16 h-16 rounded-full flex justify-center items-center text-slate-50"
             style={{ backgroundColor: "rgb(240,166,36)" }}
           >
-            1
+            ١
           </div>
           <div className="flex-1 text-center">
-            <h2 className="arl font-semibold">عددين ناتج جمعهم يساوى ٢٠</h2>
+            <h2 className="arl font-semibold">المستوى الأول</h2>
           </div>
         </div>
         <div
@@ -48,10 +52,10 @@ const Levels = () => {
             className="w-16 h-16 rounded-full flex justify-center items-center text-slate-50"
             style={{ backgroundColor: "rgb(42,87,128)" }}
           >
-            2
+            ٢
           </div>
           <div className="flex-1 text-center">
-            <h2 className="arl font-semibold">عددين ناتج جمعهم يساوى ١٠٠</h2>
+            <h2 className="arl font-semibold">المستوى الثانى</h2>
           </div>
         </div>
         <div
@@ -62,16 +66,28 @@ const Levels = () => {
             className="w-16 h-16 rounded-full flex justify-center items-center text-slate-50"
             style={{ backgroundColor: "rgb(178,87,85)" }}
           >
-            3
+            ٣
           </div>
           <div className="flex-1 text-center">
-            <h2 className="arl font-semibold">
-              ثلاث أعداد ناتج جمعهم يساوى ١٠٠
-            </h2>
+            <h2 className="arl font-semibold">المستوى الثالث</h2>
+          </div>
+        </div>
+        <div
+          className="flex items-center gap-4 mb-8 p-6 rounded cursor-pointer"
+          style={{ backgroundColor: "rgba(145,181,119,0.3)" }}
+        >
+          <div
+            className="w-16 h-16 rounded-full flex justify-center items-center text-slate-50"
+            style={{ backgroundColor: "rgb(145,181,119)" }}
+          >
+            ٤
+          </div>
+          <div className="flex-1 text-center">
+            <h2 className="arl font-semibold">المستوى الرابع</h2>
           </div>
         </div>
       </div>
-      <div className="flex-1 p-4 relative">
+      {/* <div className=" p-4 relative lg:w-1/2 mx-auto">
         <img className="absolute bottom-0 left-0 w-40" src={ills2} alt="" />
         <h2 className="arl text-2xl text-center mb-6 font-semibold">
           ضرب الأعداد
@@ -122,7 +138,7 @@ const Levels = () => {
             <h2 className="arl font-semibold">ناتج ضرب ثلاث أعداد</h2>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

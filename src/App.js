@@ -10,8 +10,8 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route exact path="/" element={<Header></Header>} />
-        <Route exact path="/المراحل" element={<Levels />} />
-        <Route exact path="/الامتحان" element={<Game />} />
+        <Route path="/المراحل" element={<Levels />} />
+        <Route path="/الامتحان" element={<Game />} />
       </Routes>
     </BrowserRouter>
   );

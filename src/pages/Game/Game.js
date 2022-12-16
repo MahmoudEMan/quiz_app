@@ -47,7 +47,7 @@ function GameTimer({
 
   return (
     <div
-      className="absolute"
+      className="fixed"
       onClick={() => {
         // Restarts to 5 minutes timer
         const time = new Date();
@@ -179,7 +179,7 @@ const Game = () => {
   };
   return (
     <div
-      className={`h-screen p-8 relative ${styles.questionsCon}`}
+      className={`lg:h-screen p-8 pb-16 relative ${styles.questionsCon}`}
       style={{ backgroundColor: "rgb(244 236 225)" }}
     >
       {steady && (
@@ -200,7 +200,7 @@ const Game = () => {
             <h2 className="text-center text-9xl enl mb-16">
               {DUMMY_DATA[currentQuestionNumber].question}
             </h2>
-            <div className="grid grid-cols-5 gap-4 p-8 gap-y-20">
+            <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 p-8 gap-y-20">
               {DUMMY_DATA[currentQuestionNumber].choices.map((number, idx) => {
                 const chosen = chosenIndex.some((item) => item === idx);
                 const color = chosen ? "rgb(42,87,128)" : "rgb(240,166,36)";
@@ -234,7 +234,7 @@ const Game = () => {
               })}
             </div>
           </div>
-          <div className="fixed w-full px-8 bottom-8 left-0 flex gap-1  overflow-hidden">
+          <div className="fixed z-20 w-full px-8 bottom-8 left-0 flex gap-1  overflow-hidden">
             {DUMMY_DATA.map((item, idx) => {
               return (
                 <div
