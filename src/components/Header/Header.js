@@ -29,10 +29,10 @@ const Header = () => {
         style={{}}
       >
         <h1
-          className={`text-6xl lg:text-7xl mb-16 arl text-center ${styles.main_title}`}
+          className={`text-6xl leading-loose lg:text-7xl mb-16 arl text-center ${styles.main_title}`}
           style={{
             fontFamily: "'Marhey', cursive",
-            color: "rgb(42,87,128)",
+            color: "rgb(178,87,85)",
           }}
         >
           {/* <div style={{ color: "rgb(240,166,36)" }}>ل</div>

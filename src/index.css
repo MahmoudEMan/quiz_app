@@ -16,6 +16,17 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+h1 {
+  background: -webkit-linear-gradient(45deg,
+   rgb(240,166,36) 0%,
+    rgb(42,87,128) 33%,
+    rgb(178,87,85) 66%
+    ,rgb(145,181,119) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0;
+  line-height: 2 !important;
+}
 .arl{
   font-family: 'Tajawal', sans-serif;
 
