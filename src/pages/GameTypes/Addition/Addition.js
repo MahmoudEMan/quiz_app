@@ -82,11 +82,11 @@ const messagesLabels = [
 
 const Game = () => {
   const [steady, setSteady] = useState(false);
-  const [currentQuestionNumber, setCurrentQuestionNumber] = useState(9);
+  const [currentQuestionNumber, setCurrentQuestionNumber] = useState(0);
   const [chosenIndex, setChosenIndex] = useState([]);
   const [chosenAnswers, setChosenAnswers] = useState([]);
   const [pauseGame, setPauseGame] = useState(false);
-  const [correctAnswers, setCorrectAnswers] = useState(8);
+  const [correctAnswers, setCorrectAnswers] = useState(0);
   const [gameOn, setGameOn] = useState(true);
   const [messages, setMessages] = useState("second");
   const navigate = useNavigate();
@@ -242,7 +242,6 @@ const Game = () => {
                 //   .question_as_number
               }
             </h2>
-            {correctAnswers}
             <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 p-8 gap-y-20">
               {levelSelected?.questions[currentQuestionNumber]?.options.map(
                 (number, idx) => {

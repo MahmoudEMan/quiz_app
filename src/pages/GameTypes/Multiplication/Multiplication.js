@@ -242,7 +242,6 @@ const Game = () => {
                 //   .question_as_number
               }
             </h2>
-            {correctAnswers}
             <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 p-8 gap-y-20">
               {levelSelected?.questions[currentQuestionNumber]?.options.map(
                 (number, idx) => {

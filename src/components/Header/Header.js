@@ -32,9 +32,10 @@ const Header = () => {
           className={`text-6xl lg:text-7xl mb-16 arl text-center ${styles.main_title}`}
           style={{
             fontFamily: "'Marhey', cursive",
+            color: "rgb(42,87,128)",
           }}
         >
-          <div style={{ color: "rgb(240,166,36)" }}>ل</div>
+          {/* <div style={{ color: "rgb(240,166,36)" }}>ل</div>
           <div style={{ color: "rgb(42,87,128)" }}>ع</div>
           <div style={{ color: "rgb(178,87,85)" }}>ب</div>
           <div style={{ color: "rgb(145,181,119)" }}>ة </div>
@@ -50,9 +51,8 @@ const Header = () => {
           <div style={{ color: "rgb(42,87,128)" }}>ص</div>
           <div style={{ color: "rgb(178,87,85)" }}>غ</div>
           <div style={{ color: "rgb(145,181,119)" }}>ي</div>
-          <div style={{ color: "rgb(145,181,119)" }}>ر</div>
-
-          {/* لعبة البيرونى الصغير */}
+          <div style={{ color: "rgb(145,181,119)" }}>ر</div> */}
+          لعبة البيرونى الصغير
         </h1>
         {/* <p className=" mb-6 arl text-salte-200">لعبة البيرونى الصغير</p> */}
 
