@@ -1,12 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import Context from "../../store/context";
 import HeroImg from "../../assets/images/hero_img.jpg";
 import { useNavigate } from "react-router-dom";
 import styles from "./Header.module.css";
 
 const Header = () => {
+  const contextStore = useContext(Context);
+  console.log(contextStore.language);
+  const { language, setLevelsType } = contextStore;
   const [languageSet, setLanguageSet] = useState(false);
   const navigate = useNavigate();
   const [fadeOutAnim, setFadeOutAnim] = useState(false);
+
   const ChangePage = () => {
     setFadeOutAnim(true);
     setTimeout(() => {
@@ -56,6 +61,11 @@ const Header = () => {
             <button
               className="text-xl py-3 w-40 rounded"
               style={{ backgroundColor: "rgb(255,200,87)" }}
+              onClick={() => {
+                setLanguageSet(true);
+                localStorage.setItem("lang", "en");
+                contextStore.setLanguage("en");
+              }}
             >
               English
             </button>
@@ -66,6 +76,9 @@ const Header = () => {
               }}
               onClick={() => {
                 setLanguageSet(true);
+                localStorage.setItem("lang", "ar");
+
+                contextStore.setLanguage("ar");
               }}
             >
               عربى
@@ -75,19 +88,32 @@ const Header = () => {
         {languageSet && (
           <div className="flex  gap-4 fadeIn">
             <button
-              className="text-xl py-3  w-40 arl font-semibold rounded"
+              className={`text-xl py-3 ${
+                language == "ar" ? "w-40" : "w-60"
+              } arl rounded font-semibold`}
               style={{
                 backgroundColor: "rgb(124,153,229)",
               }}
+              onClick={() => {
+                ChangePage();
+                localStorage.setItem("questionType", "multiplication");
+                setLevelsType("multiplication");
+              }}
             >
-              قسمة وضرب
+              {language == "ar" ? "قسمة وضرب" : "Multiplication and division "}
             </button>
             <button
-              className="text-xl py-3 w-40 arl rounded font-semibold"
+              className={`text-xl py-3 ${
+                language == "ar" ? "w-40" : "w-60"
+              } arl rounded font-semibold`}
               style={{ backgroundColor: "rgb(255,200,87)" }}
-              onClick={ChangePage}
+              onClick={() => {
+                ChangePage();
+                localStorage.setItem("questionType", "addition");
+                setLevelsType("addition");
+              }}
             >
-              جمع وطرح
+              {language == "ar" ? "جمع وطرح" : "Addition and Subtraction"}
             </button>
           </div>
         )}
