@@ -20,7 +20,7 @@ const Header = () => {
   };
   return (
     <div
-      className={`h-screen flex flex-col-reverse lg:flex-row  p-8 ${
+      className={`mt-32 lg:mt-0 h-screen flex flex-col-reverse lg:flex-row  p-8 ${
         fadeOutAnim ? "fadeOut" : ""
       }`}
     >
@@ -57,9 +57,9 @@ const Header = () => {
         {/* <p className=" mb-6 arl text-salte-200">لعبة البيرونى الصغير</p> */}
 
         {!languageSet && (
-          <div className="flex  gap-4">
+          <div className="flex w-full lg:w-auto flex-col lg:flex-row  gap-4">
             <button
-              className="text-xl py-3 w-40 rounded"
+              className="text-xl py-3 w-full lg:w-40 rounded"
               style={{ backgroundColor: "rgb(255,200,87)" }}
               onClick={() => {
                 setLanguageSet(true);
@@ -70,7 +70,7 @@ const Header = () => {
               English
             </button>
             <button
-              className="text-xl py-3  w-40 arl font-semibold rounded"
+              className="text-xl py-3  w-full lg:w-40 arl font-semibold rounded"
               style={{
                 backgroundColor: "rgb(124,153,229)",
               }}
@@ -86,10 +86,10 @@ const Header = () => {
           </div>
         )}
         {languageSet && (
-          <div className="flex  gap-4 fadeIn">
+          <div className="flex flex-col w-full lg:w-auto lg:flex-row  gap-4 fadeIn">
             <button
-              className={`text-xl py-3 ${
-                language == "ar" ? "w-40" : "w-60"
+              className={`text-xl  py-3 ${
+                language == "ar" ? "w-full lg:w-40" : "w-full lg:w-60"
               } arl rounded font-semibold`}
               style={{
                 backgroundColor: "rgb(124,153,229)",
@@ -104,7 +104,7 @@ const Header = () => {
             </button>
             <button
               className={`text-xl py-3 ${
-                language == "ar" ? "w-40" : "w-60"
+                language == "ar" ? "w-full lg:w-40" : "w-full lg:w-60"
               } arl rounded font-semibold`}
               style={{ backgroundColor: "rgb(255,200,87)" }}
               onClick={() => {
