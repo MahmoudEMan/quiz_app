@@ -212,7 +212,7 @@ const Game = () => {
   return (
     <div
       className={`h-screen p-8 pb-16 relative ${styles.questionsCon}`}
-      style={{ backgroundColor: "rgb(244 236 225)" }}
+      style={{ backgroundColor: "rgb(244 236 225)", minHeight: "100vh" }}
     >
       {steady && (
         <SteadyTimer expiryTimestamp={steadyTime} onTimeExpire={startGame} />
