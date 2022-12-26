@@ -98,8 +98,8 @@ const Levels = () => {
   return (
     <div
       dir="rtl"
-      className={`fadeIn flex p-8  ${fadeOutAnim ? "fadeOut" : ""}`}
-      style={{ backgroundColor: "rgb(244 236 225)" }}
+      className={`fadeIn flex   ${fadeOutAnim ? "fadeOut" : ""}`}
+      style={{ backgroundColor: "rgb(244 236 225)", minHeight: "100vh" }}
     >
       <div className=" p-4 relative lg:w-1/2 mx-auto">
         <img
