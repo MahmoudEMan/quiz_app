@@ -38,7 +38,7 @@ function GameTimer({
 
   useEffect(() => {
     const time = new Date();
-    time.setSeconds(time.getSeconds() + 30);
+    time.setSeconds(time.getSeconds() + 20);
     restart(time);
     if (!pauseGame) {
       resume();
@@ -111,7 +111,7 @@ const Game = () => {
   steadyTime.setSeconds(steadyTime.getSeconds() + 4);
 
   const gameTime = new Date();
-  gameTime.setSeconds(gameTime.getSeconds() + 780);
+  gameTime.setSeconds(gameTime.getSeconds() + 20);
 
   function goNextQuestion() {
     setCurrentQuestionNumber(currentQuestionNumber + 1);
