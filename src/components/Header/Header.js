@@ -3,7 +3,10 @@ import Context from "../../store/context";
 import HeroImg from "../../assets/images/hero_img.jpg";
 import { useNavigate } from "react-router-dom";
 import styles from "./Header.module.css";
-
+import {
+  BsFillArrowRightCircleFill,
+  BsFillArrowLeftCircleFill,
+} from "react-icons/bs";
 const Header = () => {
   const contextStore = useContext(Context);
   console.log(contextStore.language);
@@ -86,7 +89,7 @@ const Header = () => {
           </div>
         )}
         {languageSet && (
-          <div className="flex flex-col w-full lg:w-auto lg:flex-row  gap-4 fadeIn">
+          <div className="flex relative flex-col w-full lg:w-auto lg:flex-row  gap-4 fadeIn">
             <button
               className={`text-xl  py-3 ${
                 language == "ar" ? "w-full lg:w-40" : "w-full lg:w-60"
@@ -113,6 +116,16 @@ const Header = () => {
             >
               {language == "ar" ? "جمع وطرح" : "Addition and Subtraction"}
             </button>
+            <div
+              onClick={() => {
+                setLanguageSet(false);
+              }}
+              className="absolute -top-12 lg:top-1/2 rotate-90 lg:rotate-0  -translate-x-1/2 lg:-translate-y-1/2 left-1/2 lg:-left-12 cursor-pointer "
+            >
+              <BsFillArrowLeftCircleFill
+                style={{ width: "2rem", height: "2rem", fill: "#f0a624" }}
+              ></BsFillArrowLeftCircleFill>
+            </div>
           </div>
         )}
       </div>

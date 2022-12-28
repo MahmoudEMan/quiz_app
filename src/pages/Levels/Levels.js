@@ -1,7 +1,11 @@
 import React, { useState, useContext } from "react";
 import Context from "../../store/context";
 import { useNavigate } from "react-router-dom";
-import ContextProvider from "../../store/ContextProvider";
+import {
+  BsFillArrowRightCircleFill,
+  BsFillArrowLeftCircleFill,
+} from "react-icons/bs";
+// import ContextProvider from "../../store/ContextProvider";
 
 import ills1 from "../../assets/images/ills (1).png";
 import ills2 from "../../assets/images/ills (2).png";
@@ -68,17 +72,17 @@ const Levels = () => {
   const localLang = localStorage.getItem("lang");
   const localLevelType = localStorage.getItem("questionType");
   const localLevelPassed = JSON.parse(localStorage.getItem("levelPassed")).find(
-    (item) => item.name == localLevelType
+    (item) => item.name === localLevelType
   );
 
   console.log(questions);
   // console.log(levelsType);
-  const levelSelected = languageSets.find((set) => set.type == localLevelType);
+  const levelSelected = languageSets.find((set) => set.type === localLevelType);
   // console.log(levelSelected);
 
   const levelsDetected = [];
   questions?.forEach((question, idx) => {
-    const type = localLevelType == "addition" ? "sum" : "multiply";
+    const type = localLevelType === "addition" ? "sum" : "multiply";
     const bool = question.name.split("_").includes(type);
     if (bool) {
       levelsDetected.push(question);
@@ -104,15 +108,25 @@ const Levels = () => {
       <div className=" p-4 relative lg:w-1/2 mx-auto">
         <img
           className="absolute top-0 left-0 w-40 opacity-50 "
-          src={localLevelType == "addition" ? ills1 : ills2}
+          src={localLevelType === "addition" ? ills1 : ills2}
           alt=""
         />
+        <div
+          onClick={() => {
+            navigate(-1);
+          }}
+          className="fixed top-2 left-4 cursor-pointer "
+        >
+          <BsFillArrowLeftCircleFill
+            style={{ width: "2rem", height: "2rem", fill: "#f0a624" }}
+          ></BsFillArrowLeftCircleFill>
+        </div>
         <h2
           className={`${
-            localLang == "ar" ? "arl" : "enl"
+            localLang === "ar" ? "arl" : "enl"
           }  text-2xl text-center mb-6 font-semibold`}
         >
-          {localLang == "ar" ? levelSelected.ar : levelSelected.en}
+          {localLang === "ar" ? levelSelected.ar : levelSelected.en}
         </h2>
         {levelsDetected.map((level, idx) => {
           console.log(level);
@@ -143,14 +157,14 @@ const Levels = () => {
                 className="w-16 h-16 rounded-full flex justify-center items-center text-slate-50"
                 style={{ backgroundColor: color }}
               >
-                {localLang == "ar" ? arabicNumbers[idx] : idx + 1}
+                {localLang === "ar" ? arabicNumbers[idx] : idx + 1}
               </div>
               <div className="flex-1 text-center">
                 <h2
                   className={`arl font-semibold text-xl`}
                   style={{ color: color }}
                 >
-                  {localLang == "ar"
+                  {localLang === "ar"
                     ? levelsLabels[idx].ar
                     : levelsLabels[idx].en}
                 </h2>

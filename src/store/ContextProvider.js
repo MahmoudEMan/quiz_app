@@ -5,7 +5,6 @@ import axios from "axios";
 const ContextProvider = (props) => {
   const [questions, setQuestions] = useState(null);
   const [language, setLanguage] = useState("");
-  const [levelsPassed, setLevelsPassed] = useState("");
 
   useEffect(() => {}, [questions]);
 

@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
-import { BsFillArrowRightCircleFill } from "react-icons/bs";
+import {
+  BsFillArrowRightCircleFill,
+  BsFillArrowLeftCircleFill,
+} from "react-icons/bs";
 import { shuffleQuestions } from "../../../helpers";
 
 import { useTimer } from "react-timer-hook";
 import Context from "../../../store/context";
 import styles from "./Addition.module.css";
-import CongratsImg from "../../../assets/images/congrats.png";
+import CongratsImg from "../../../assets/images/yesCartoon.png";
 import ArrowImg from "../../../assets/images/arrow-right.png";
 import { ReactComponent as ClappingSvg } from "../../../assets/images/clapping.svg";
 import { ReactComponent as Dizzy } from "../../../assets/images/Dizzy face-bro.svg";
@@ -97,20 +100,30 @@ function GameTimer({
 }
 
 const messagesLabels = [
-  { label: "انت مبدع", id: 8, timeOut: false },
-  { label: "احسنت", id: 6, timeOut: false },
-  { label: "حاول مرة أخرى", id: 0, timeOut: false },
+  {
+    labelAr: "انت مبدع",
+    labelEn: "What a genius little bot",
+    id: 8,
+    timeOut: false,
+  },
+  { labelAr: "احسنت", labelEn: "Well done ", id: 6, timeOut: false },
+  {
+    labelAr: "حاول مرة أخرى",
+    labelEn: "Try again you can do better ",
+    id: 0,
+    timeOut: false,
+  },
 ];
 const arabicNumbers = ["١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩", "٠"];
 console.log(arabicNumbers[1]);
 
 const Game = () => {
   const [steady, setSteady] = useState(false);
-  const [currentQuestionNumber, setCurrentQuestionNumber] = useState(8);
+  const [currentQuestionNumber, setCurrentQuestionNumber] = useState(0);
   const [chosenIndex, setChosenIndex] = useState([]);
   const [chosenAnswers, setChosenAnswers] = useState([]);
   const [pauseGame, setPauseGame] = useState(false);
-  const [correctAnswers, setCorrectAnswers] = useState(1);
+  const [correctAnswers, setCorrectAnswers] = useState(0);
   const [gameOn, setGameOn] = useState(true);
   const [messages, setMessages] = useState("second");
   const [correctAnswerConfirmed, setCorrectAnswerConfirmed] = useState(false);
@@ -185,40 +198,6 @@ const Game = () => {
           Number(accumulator) + Number(currentValue),
         0
       );
-
-      //   اجابة صحيحة
-      // if (
-      //   answer ==
-      //   levelSelected.questions[currentQuestionNumber]?.question_as_number
-      // ) {
-      //   setCorrectAnswers(correctAnswers + 1);
-      // }
-
-      // if (currentQuestionNumber + 1 < levelSelected.questions?.length) {
-      //   setTimeout(() => {
-      //     goNextQuestion();
-      //   }, 500);
-      // } else {
-      //   if (correctAnswers >= 6) {
-      //     const localLevelPassed = JSON.parse(
-      //       localStorage.getItem("levelPassed")
-      //     );
-
-      //     const newArr = localLevelPassed.map((item) => {
-      //       if (item.name === currentQuestionType) {
-      //         if (item.number > levelNumber) {
-      //           return item;
-      //         }
-      //         return { ...item, number: item.number + 1 };
-      //       }
-      //       return item;
-      //     });
-      //     localStorage.setItem("levelPassed", JSON.stringify(newArr));
-      //   }
-      //   const m = messagesLabels.find((i) => correctAnswers >= i.id);
-      //   setMessages(m);
-      //   setGameOn(false);
-      // }
     }
   };
   const answerConfirmed = () => {
@@ -301,6 +280,16 @@ const Game = () => {
                 <img className="w-20" src={ArrowImg} alt="" />
               </div>
             )}
+            <div
+              onClick={() => {
+                navigate(-1);
+              }}
+              className="fixed top-2 left-4 cursor-pointer "
+            >
+              <BsFillArrowLeftCircleFill
+                style={{ width: "2rem", height: "2rem", fill: "#f0a624" }}
+              ></BsFillArrowLeftCircleFill>
+            </div>
             {correctAnswerConfirmed && (
               <div className="fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 z-20">
                 <ClappingSvg className="zoomOut"></ClappingSvg>
@@ -386,7 +375,7 @@ const Game = () => {
           style={{ maxWidth: "756px", maxHeight: "400px" }}
         >
           <div className="bg-slate-50 relative h-full flex flex-col p-4 justify-center items-center w-full shadow-lg">
-            {!messages.timeOut && messages.label !== "حاول مرة أخرى" && (
+            {!messages.timeOut && messages.id >= 6 && (
               <div className="absolute - opacity-50 right-0 top-0">
                 <img src={CongratsImg} alt="" />
               </div>
@@ -404,7 +393,7 @@ const Game = () => {
                 } text-7xl font-semibold mb-2 text-center`}
                 style={{ color: "rgb(193,112,97)" }}
               >
-                {messages.label}
+                {localLang == "ar" ? messages.labelAr : messages.labelEn}
               </h2>
               {!messages.timeOut && (
                 <h6
@@ -412,8 +401,17 @@ const Game = () => {
                     localLang == "ar" ? "arl" : "enl"
                   } text-center  text-slate-700`}
                 >
+                  {localLang === "ar"
+                    ? " لقد جاوبت على"
+                    : " You have answered "}{" "}
                   لقد جاوبت على
-                  {correctAnswers}/ {levelSelected.questions.length}
+                  {localLang === "ar"
+                    ? convertToArabic(correctAnswers)
+                    : correctAnswers}
+                  /
+                  {localLang === "ar"
+                    ? convertToArabic(levelSelected.questions.length)
+                    : levelSelected.questions.length}
                 </h6>
               )}
 
@@ -427,7 +425,9 @@ const Game = () => {
                     } text-3xl text-center font-semibold mb-2`}
                     style={{ color: "rgb(193,112,97)" }}
                   >
-                    لقد أتممت جميع المستويات وحصلت على لقب البيرونى الصغير{" "}
+                    {localLang == "ar"
+                      ? "لقد أتممت جميع المستويات وحصلت على لقب البيرونى الصغير"
+                      : "You have finished all the levels and earned little bairony title"}
                   </h2>
                 )}
               {messages.id >= 6 &&
@@ -458,7 +458,7 @@ const Game = () => {
                 >
                   الرئيسية
                 </button>
-                {messages.timeOut || messages.label == "حاول مرة أخرى" ? (
+                {messages.timeOut || messages.id < 6 ? (
                   <button
                     className={`rounded-full py-2 px-4 ${
                       localLang == "ar" ? "arl" : "enl"
