@@ -60,7 +60,7 @@ function GameTimer({
   const currentQuestionType = localStorage.getItem("questionType");
   useEffect(() => {
     const time = new Date();
-    time.setSeconds(time.getSeconds() + 20);
+    time.setSeconds(time.getSeconds() + 30);
     restart(time);
     if (!pauseGame) {
       resume();
@@ -150,7 +150,7 @@ const Game = () => {
   );
 
   const gameTime = new Date();
-  gameTime.setSeconds(gameTime.getSeconds() + 9000);
+  gameTime.setSeconds(gameTime.getSeconds() + 30);
 
   function goNextQuestion() {
     setCurrentQuestionNumber(currentQuestionNumber + 1);
