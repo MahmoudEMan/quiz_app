@@ -223,6 +223,7 @@ const Game = () => {
   };
   const answerConfirmed = () => {
     setCheck(true);
+    setPauseGame(true);
     const answer = chosenAnswers.reduce(
       (accumulator, currentValue) => Number(accumulator) + Number(currentValue),
       0
