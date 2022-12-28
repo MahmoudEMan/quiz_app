@@ -7,8 +7,6 @@ export const shuffleQuestions = (question) => {
       return { sort: Math.random(), ...a };
     })
     .sort((a, b) => a.sort - b.sort);
-  console.log(question);
-  console.log(reshuffledAnswers);
 
   return reshuffledAnswers;
 };

@@ -25,7 +25,6 @@ function convertToArabic(number) {
       return arabicNumbers[9];
     }
   });
-  // console.log(numAr);
   return numAr.join("");
 }
 
@@ -115,7 +114,6 @@ const messagesLabels = [
   },
 ];
 const arabicNumbers = ["١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩", "٠"];
-console.log(arabicNumbers[1]);
 
 const Game = () => {
   const [steady, setSteady] = useState(false);
@@ -130,8 +128,6 @@ const Game = () => {
   const [check, setCheck] = useState(false);
   const navigate = useNavigate();
 
-  console.log(messages);
-
   const localLang = localStorage.getItem("lang");
   const localLevelPassed = JSON.parse(localStorage.getItem("levelPassed"));
   const currentQuestionType = localStorage.getItem("questionType");
@@ -145,25 +141,21 @@ const Game = () => {
   const levelSelected = questions?.find((question) => {
     return question.name === localStorage.getItem("levelSelected");
   });
-  console.log(levelSelected);
   if (levelSelected) {
     levelSelected.questions = shuffleQuestions(levelSelected?.questions);
   }
+  console.clear();
+  console.log(
+    "answer is :" + levelSelected?.questions[currentQuestionNumber].answer
+  );
   const levelNumber = levelSelected?.name.split("_")[3] - 1;
   const numberOfAdds = levelSelected?.name.split("_").includes("3") ? 3 : 2;
-  console.log(levelNumber);
-  console.log(levelSelected?.questions);
 
   const startGame = () => {
     setSteady(false);
   };
   const steadyTime = new Date();
   steadyTime.setSeconds(steadyTime.getSeconds() + 4);
-
-  console.log(
-    levelNumber + 1 > localLevelPassedCurrentType.number &&
-      localLevelPassedCurrentType.numberOfLevels !== 1 + levelNumber
-  );
 
   const gameTime = new Date();
   gameTime.setSeconds(gameTime.getSeconds() + 30);
@@ -243,7 +235,6 @@ const Game = () => {
     const answer = chosenAnswers.reduce(
       (accumulator, currentValue) => Number(accumulator) * Number(currentValue)
     );
-    console.log(correctAnswers);
     if (
       answer ===
       levelSelected.questions[currentQuestionNumber]?.question_as_number
@@ -270,8 +261,6 @@ const Game = () => {
       }
       const m = messagesLabels.find((i) => correctAnswers >= i.id);
       setMessages(m);
-
-      console.log(m);
       setGameOn(false);
     }
   };
@@ -334,7 +323,6 @@ const Game = () => {
             <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 p-8 gap-y-20">
               {levelSelected?.questions[currentQuestionNumber]?.options.map(
                 (number, idx) => {
-                  console.log(number);
                   const chosen = chosenIndex.some((item) => item === idx);
                   let color;
                   if (chosen && correctAnswerConfirmed && check) {

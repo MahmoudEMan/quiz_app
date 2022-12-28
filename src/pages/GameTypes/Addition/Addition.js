@@ -25,7 +25,6 @@ function convertToArabic(number) {
       return arabicNumbers[9];
     }
   });
-  // console.log(numAr);
   return numAr.join("");
 }
 
@@ -115,7 +114,6 @@ const messagesLabels = [
   },
 ];
 const arabicNumbers = ["١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩", "٠"];
-console.log(arabicNumbers[1]);
 
 const Game = () => {
   const [steady, setSteady] = useState(false);
@@ -146,21 +144,18 @@ const Game = () => {
   if (levelSelected) {
     levelSelected.questions = shuffleQuestions(levelSelected?.questions);
   }
+  console.clear();
+  console.log(
+    "answer is :" + levelSelected?.questions[currentQuestionNumber].answer
+  );
   const levelNumber = levelSelected?.name.split("_")[3] - 1;
   const numberOfAdds = levelSelected?.name.split("_").includes("3") ? 3 : 2;
-  console.log(levelNumber);
-  console.log(levelSelected?.questions);
 
   const startGame = () => {
     setSteady(false);
   };
   const steadyTime = new Date();
   steadyTime.setSeconds(steadyTime.getSeconds() + 4);
-
-  console.log(
-    levelNumber + 1 > localLevelPassedCurrentType.number &&
-      localLevelPassedCurrentType.numberOfLevels !== 1 + levelNumber
-  );
 
   const gameTime = new Date();
   gameTime.setSeconds(gameTime.getSeconds() + 30);
@@ -207,7 +202,6 @@ const Game = () => {
       (accumulator, currentValue) => Number(accumulator) + Number(currentValue),
       0
     );
-    console.log(correctAnswers);
     if (
       answer ===
       levelSelected.questions[currentQuestionNumber]?.question_as_number
@@ -235,7 +229,6 @@ const Game = () => {
       const m = messagesLabels.find((i) => correctAnswers >= i.id);
       setMessages(m);
 
-      console.log(m);
       setGameOn(false);
     }
   };
