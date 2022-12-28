@@ -13,3 +13,17 @@ from{
 .questionsCon{
     background-image: url("../../../assets/images/bg.png");
 }
+.options_anim
+{
+    animation: optionAnim 0.5s  ease-out;
+}
+@keyframes optionAnim {
+    from{
+        opacity: 0;
+        transform: translateX(-30px) scale(0);
+    }to{
+        opacity: 1;
+        transform: translateX(0px) scale(1);
+
+    }
+}

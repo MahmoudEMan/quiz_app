@@ -7,25 +7,37 @@ const ContextProvider = (props) => {
   const [language, setLanguage] = useState("");
   const [levelsPassed, setLevelsPassed] = useState("");
 
-  useEffect(() => {
-    const levelSPassed = localStorage.getItem("levelPassed");
-    if (levelSPassed) {
-      console.log(levelSPassed);
-    } else {
-      const arr = [
-        { name: "addition", number: 0 },
-        { name: "multiplication", number: 0 },
-      ];
-      localStorage.setItem("levelPassed", JSON.stringify(arr));
-    }
-  }, []);
+  useEffect(() => {}, [questions]);
 
   useEffect(() => {
-    async function fetchData() {
-      axios.get(`https://albiruni.ratina.io/fetch_questions`).then((res) => {
-        setQuestions(res.data);
+    const fetchData = async () => {
+      let ques;
+      await axios
+        .get(`https://albiruni.ratina.io/fetch_questions`)
+        .then((res) => {
+          setQuestions(res.data);
+          ques = res.data;
+        });
+
+      const qAddNum = [];
+      ques.forEach((q) => {
+        if (q.name.split("_").includes("sum")) {
+          qAddNum.push(q);
+        }
       });
-    }
+      const levelSPassed = localStorage.getItem("levelPassed");
+      if (!levelSPassed) {
+        const arr = [
+          { name: "addition", number: 0, numberOfLevels: qAddNum.length },
+          {
+            name: "multiplication",
+            number: 0,
+            numberOfLevels: ques.length - qAddNum.length,
+          },
+        ];
+        localStorage.setItem("levelPassed", JSON.stringify(arr));
+      }
+    };
     fetchData();
   }, []);
   const context = {

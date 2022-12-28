@@ -7,7 +7,7 @@ import styles from "./Header.module.css";
 const Header = () => {
   const contextStore = useContext(Context);
   console.log(contextStore.language);
-  const { language, setLevelsType } = contextStore;
+  const { language } = contextStore;
   const [languageSet, setLanguageSet] = useState(false);
   const navigate = useNavigate();
   const [fadeOutAnim, setFadeOutAnim] = useState(false);
@@ -20,7 +20,7 @@ const Header = () => {
   };
   return (
     <div
-      className={`mt-32 lg:mt-0 h-screen flex flex-col-reverse lg:flex-row  p-8 ${
+      className={` lg:h-screen flex flex-col-reverse lg:flex-row  p-8 ${
         fadeOutAnim ? "fadeOut" : ""
       }`}
     >
@@ -97,7 +97,6 @@ const Header = () => {
               onClick={() => {
                 ChangePage();
                 localStorage.setItem("questionType", "multiplication");
-                setLevelsType("multiplication");
               }}
             >
               {language == "ar" ? "قسمة وضرب" : "Multiplication and division "}
@@ -110,7 +109,6 @@ const Header = () => {
               onClick={() => {
                 ChangePage();
                 localStorage.setItem("questionType", "addition");
-                setLevelsType("addition");
               }}
             >
               {language == "ar" ? "جمع وطرح" : "Addition and Subtraction"}
