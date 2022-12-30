@@ -9,7 +9,7 @@ import {
 } from "react-icons/bs";
 const Header = () => {
   const contextStore = useContext(Context);
-  console.log(contextStore.language);
+  console.log(contextStore);
   const { language } = contextStore;
   const [languageSet, setLanguageSet] = useState(false);
   const navigate = useNavigate();
@@ -132,6 +132,7 @@ const Header = () => {
       <div className="flex-1 flex justify-center items-center">
         <img src={HeroImg} alt="" />
       </div>
+      <div>{contextStore.counter}</div>
     </div>
   );
 };

@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
+import axios from "axios";
+
 import {
   BsFillArrowRightCircleFill,
   BsFillArrowLeftCircleFill,
@@ -116,7 +118,7 @@ const messagesLabels = [
 const arabicNumbers = ["١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩", "٠"];
 
 const Game = () => {
-  const [steady, setSteady] = useState(false);
+  const [steady, setSteady] = useState(true);
   const [currentQuestionNumber, setCurrentQuestionNumber] = useState(0);
   const [chosenIndex, setChosenIndex] = useState([]);
   const [chosenAnswers, setChosenAnswers] = useState([]);
@@ -126,6 +128,9 @@ const Game = () => {
   const [messages, setMessages] = useState("second");
   const [correctAnswerConfirmed, setCorrectAnswerConfirmed] = useState(false);
   const [check, setCheck] = useState(false);
+  const [levelTimer, setLevelTimer] = useState();
+  // console.log(typeof levelTimer);
+
   const navigate = useNavigate();
 
   const localLang = localStorage.getItem("lang");
@@ -144,10 +149,25 @@ const Game = () => {
   if (levelSelected) {
     levelSelected.questions = shuffleQuestions(levelSelected?.questions);
   }
-  console.clear();
-  console.log(
-    "answer is :" + levelSelected?.questions[currentQuestionNumber].answer
-  );
+  console.log("2");
+
+  useEffect(() => {
+    async function getLevelTimer(params) {
+      await axios
+        .get(`https://albiruni.ratina.io/get_levels_time`)
+        .then((res) => {
+          setLevelTimer(Number(res.data[levelSelected.name]));
+          // console.log(res.data);
+          console.log("1");
+        });
+    }
+    getLevelTimer();
+  }, []);
+
+  // console.clear();
+  // console.log(
+  //   "answer is :" + levelSelected?.questions[currentQuestionNumber].answer
+  // );
   const levelNumber = levelSelected?.name.split("_")[3] - 1;
   const numberOfAdds = levelSelected?.name.split("_").includes("3") ? 3 : 2;
 
@@ -158,7 +178,7 @@ const Game = () => {
   steadyTime.setSeconds(steadyTime.getSeconds() + 4);
 
   const gameTime = new Date();
-  gameTime.setSeconds(gameTime.getSeconds() + 30);
+  gameTime.setSeconds(gameTime.getSeconds() + levelTimer);
 
   function goNextQuestion() {
     setCurrentQuestionNumber(currentQuestionNumber + 1);
@@ -247,7 +267,11 @@ const Game = () => {
             expiryTimestamp={gameTime}
             onTimeExpire={() => {
               setGameOn(false);
-              setMessages({ label: "انتهى الوقت", timeOut: true });
+              setMessages({
+                labelAr: "انتهى الوقت",
+                labelEn: "Time out!",
+                timeOut: true,
+              });
             }}
             currentQuestionNumber={currentQuestionNumber}
             pauseGame={pauseGame}
@@ -259,10 +283,11 @@ const Game = () => {
               } mb-16`}
             >
               {localLang == "ar"
-                ? `أجد مكونات العدد (${convertToArabic(
-                    levelSelected?.questions[currentQuestionNumber]
-                      ?.question_as_number
-                  )})`
+                ? `أجد مكونات العدد 
+                (${convertToArabic(
+                  levelSelected?.questions[currentQuestionNumber]
+                    ?.question_as_number
+                )})`
                 : `Find sums of  (${levelSelected?.questions[currentQuestionNumber]?.question_as_number})`}
             </h2>
             {chosenAnswers.length === numberOfAdds && (
@@ -464,6 +489,7 @@ const Game = () => {
                       setCurrentQuestionNumber(0);
                       setChosenIndex([]);
                       setChosenAnswers([]);
+                      setCorrectAnswers(0);
                       setGameOn(true);
                       setSteady(true);
                     }}

@@ -31,7 +31,7 @@ const colors = [
   },
 ];
 const arabicNumbers = ["١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩", "٠"];
-console.log(arabicNumbers);
+
 const levelsLabels = [
   {
     ar: "المستوى الأول",

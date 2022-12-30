@@ -7,6 +7,7 @@ import { shuffleQuestions } from "../../../helpers";
 
 import { useTimer } from "react-timer-hook";
 import Context from "../../../store/context";
+
 import styles from "../Addition/Addition.module.css";
 import CongratsImg from "../../../assets/images/yesCartoon.png";
 import ArrowImg from "../../../assets/images/arrow-right.png";
@@ -14,7 +15,6 @@ import { ReactComponent as ClappingSvg } from "../../../assets/images/clapping.s
 import { ReactComponent as Dizzy } from "../../../assets/images/Dizzy face-bro.svg";
 
 import { useNavigate } from "react-router-dom";
-
 function convertToArabic(number) {
   const numberArArray = Array.from(String(number), Number);
 
@@ -279,7 +279,11 @@ const Game = () => {
             expiryTimestamp={gameTime}
             onTimeExpire={() => {
               setGameOn(false);
-              setMessages({ label: "انتهى الوقت", timeOut: true });
+              setMessages({
+                labelAr: "انتهى الوقت",
+                labelEn: "Time out!",
+                timeOut: true,
+              });
             }}
             currentQuestionNumber={currentQuestionNumber}
             pauseGame={pauseGame}
@@ -291,10 +295,15 @@ const Game = () => {
               } mb-16`}
             >
               {localLang === "ar"
-                ? `عددان ناتج ضربهما (${convertToArabic(
-                    levelSelected?.questions[currentQuestionNumber]
-                      ?.question_as_number
-                  )})`
+                ? `${
+                    numberOfAdds === 2
+                      ? "عددان ناتج ضربهما"
+                      : "ثلاث أعداد ناتج ضربهما"
+                  } 
+                (${convertToArabic(
+                  levelSelected?.questions[currentQuestionNumber]
+                    ?.question_as_number
+                )})`
                 : `Two multiplied numbers equals  (${levelSelected?.questions[currentQuestionNumber]?.question_as_number})`}
             </h2>
             {chosenAnswers.length === numberOfAdds && (

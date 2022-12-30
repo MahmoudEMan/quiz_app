@@ -5,15 +5,21 @@ import axios from "axios";
 const ContextProvider = (props) => {
   const [questions, setQuestions] = useState(null);
   const [language, setLanguage] = useState("");
+  const [counter, setCounter] = useState(0);
 
   useEffect(() => {}, [questions]);
 
   useEffect(() => {
     const fetchData = async () => {
       let ques;
+
       await axios
         .get(`https://albiruni.ratina.io/fetch_questions`)
         .then((res) => {
+          // setInterval(() => {
+          //   console.log("wait");
+          // }, 1);
+          console.log(res.data);
           setQuestions(res.data);
           ques = res.data;
         });
@@ -43,7 +49,9 @@ const ContextProvider = (props) => {
     questions,
     language,
     setLanguage,
+    counter,
   };
+  console.log(context);
 
   return <Context.Provider value={context}>{props.children}</Context.Provider>;
 };
