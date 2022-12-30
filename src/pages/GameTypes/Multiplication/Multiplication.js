@@ -290,6 +290,7 @@ const Game = () => {
           ></GameTimer>
           <div>
             <h2
+              dir={localLang == "ar" ? "rtl" : ""}
               className={`text-center text-6xl ${
                 localLang === "ar" ? "arl" : "enl"
               } mb-16`}

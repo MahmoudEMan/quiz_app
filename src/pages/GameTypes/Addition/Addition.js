@@ -21,10 +21,10 @@ function convertToArabic(number) {
   const numberArArray = Array.from(String(number), Number);
 
   const numAr = numberArArray.map((item, index) => {
-    if (arabicNumbers[Number(item) - 1]) {
-      return arabicNumbers[Number(item) - 1];
+    if (arabicNumbers[Number(item)]) {
+      return arabicNumbers[Number(item)];
     } else {
-      return arabicNumbers[9];
+      return ".";
     }
   });
   return numAr.join("");
@@ -115,7 +115,8 @@ const messagesLabels = [
     timeOut: false,
   },
 ];
-const arabicNumbers = ["١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩", "٠"];
+// const arabicNumbers = ["١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩", "٠"];
+const arabicNumbers = ["٠", "١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩"];
 
 const Game = () => {
   const [steady, setSteady] = useState(true);
@@ -278,6 +279,7 @@ const Game = () => {
           ></GameTimer>
           <div>
             <h2
+              dir={localLang == "ar" ? "rtl" : ""}
               className={`text-center text-6xl ${
                 localLang == "ar" ? "arl" : "enl"
               } mb-16`}
