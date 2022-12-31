@@ -163,9 +163,8 @@ const Game = () => {
       await axios
         .get(`https://albiruni.ratina.io/get_levels_time`)
         .then((res) => {
-          setLevelTimer(5);
+          setLevelTimer(Number(res.data[levelSelected.name]));
         });
-      // Number(res.data[levelSelected.name])
     }
     getLevelTimer();
   }, []);
