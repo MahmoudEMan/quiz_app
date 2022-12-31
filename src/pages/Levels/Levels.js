@@ -113,7 +113,7 @@ const Levels = () => {
         />
         <div
           onClick={() => {
-            navigate(-1);
+            navigate("/");
           }}
           className="fixed top-2 left-4 cursor-pointer "
         >

@@ -156,6 +156,7 @@ const Game = () => {
   if (levelSelected) {
     levelSelected.questions = shuffleQuestions(levelSelected?.questions);
   }
+  console.clear();
   console.log(levelSelected?.questions[currentQuestionNumber].answer);
 
   useEffect(() => {
@@ -207,11 +208,40 @@ const Game = () => {
         localStorage.setItem("levelPassed", JSON.stringify(newArr));
       }
       if (correctAnswers >= 6) {
+        var params = new URLSearchParams();
+        params.append("score", "3");
+        params.append(
+          "answers",
+          JSON.stringify([
+            {
+              name: "sum_sub_level_1",
+              questions: [
+                {
+                  en: {
+                    label: "= 19",
+                  },
+                  ar: {
+                    label: "تكوين العدد 19",
+                  },
+                  question_as_number: 19,
+                  is_correct: true,
+                },
+                {
+                  en: {
+                    label: "= 6",
+                  },
+                  ar: {
+                    label: "تكوين العدد 6",
+                  },
+                  question_as_number: 6,
+                  is_correct: false,
+                },
+              ],
+            },
+          ])
+        );
         axios
-          .post("https://albiruni.ratina.io/set_result", {
-            ...levelSelected,
-            passed: true,
-          })
+          .post("https://albiruni.ratina.io/set_result", params)
           .then(function (response) {
             console.log(response);
           })
@@ -473,10 +503,10 @@ const Game = () => {
                     backgroundColor: "rgb(193,112,97)",
                   }}
                   onClick={() => {
-                    navigate("/");
+                    navigate("/المراحل");
                   }}
                 >
-                  الرئيسية
+                  {localLang === "ar" ? "المستويات" : "Levels"}
                 </button>
                 {messages.timeOut || messages.id < 6 ? (
                   <button
