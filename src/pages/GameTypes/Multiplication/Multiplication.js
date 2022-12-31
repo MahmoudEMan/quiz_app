@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
+import axios from "axios";
+
 import {
   BsFillArrowRightCircleFill,
   BsFillArrowLeftCircleFill,
@@ -49,6 +51,7 @@ function SteadyTimer({ expiryTimestamp, onTimeExpire }) {
   );
 }
 function GameTimer({
+  levelTimer,
   expiryTimestamp,
   onTimeExpire,
   currentQuestionNumber,
@@ -62,7 +65,7 @@ function GameTimer({
   const currentQuestionType = localStorage.getItem("questionType");
   useEffect(() => {
     const time = new Date();
-    time.setSeconds(time.getSeconds() + 30);
+    time.setSeconds(time.getSeconds() + levelTimer);
     restart(time);
     if (!pauseGame) {
       resume();
@@ -116,7 +119,7 @@ const messagesLabels = [
 const arabicNumbers = ["١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩", "٠"];
 
 const Game = () => {
-  const [steady, setSteady] = useState(false);
+  const [steady, setSteady] = useState(true);
   const [currentQuestionNumber, setCurrentQuestionNumber] = useState(0);
   const [chosenIndex, setChosenIndex] = useState([]);
   const [chosenAnswers, setChosenAnswers] = useState([]);
@@ -126,6 +129,8 @@ const Game = () => {
   const [messages, setMessages] = useState("second");
   const [correctAnswerConfirmed, setCorrectAnswerConfirmed] = useState(false);
   const [check, setCheck] = useState(false);
+  const [levelTimer, setLevelTimer] = useState();
+
   const navigate = useNavigate();
 
   const localLang = localStorage.getItem("lang");
@@ -137,6 +142,16 @@ const Game = () => {
 
   const context = useContext(Context);
   const { questions } = context;
+  useEffect(() => {
+    async function getLevelTimer() {
+      await axios
+        .get(`https://albiruni.ratina.io/get_levels_time`)
+        .then((res) => {
+          setLevelTimer(5);
+        });
+    }
+    getLevelTimer();
+  }, []);
 
   const levelSelected = questions?.find((question) => {
     return question.name === localStorage.getItem("levelSelected");
@@ -144,7 +159,7 @@ const Game = () => {
   if (levelSelected) {
     levelSelected.questions = shuffleQuestions(levelSelected?.questions);
   }
-  console.clear();
+  // console.clear();
   console.log(
     "answer is :" + levelSelected?.questions[currentQuestionNumber].answer
   );
@@ -158,15 +173,38 @@ const Game = () => {
   steadyTime.setSeconds(steadyTime.getSeconds() + 4);
 
   const gameTime = new Date();
-  gameTime.setSeconds(gameTime.getSeconds() + 30);
+  gameTime.setSeconds(gameTime.getSeconds() + levelTimer);
 
   function goNextQuestion() {
-    setCurrentQuestionNumber(currentQuestionNumber + 1);
-    setPauseGame(false);
-    setChosenIndex([]);
-    setChosenAnswers([]);
-    setCorrectAnswerConfirmed(false);
-    setCheck(false);
+    setPauseGame(true);
+
+    if (currentQuestionNumber + 1 < levelSelected.questions?.length) {
+      setTimeout(() => {
+        setPauseGame(true);
+        setCurrentQuestionNumber(currentQuestionNumber + 1);
+        setPauseGame(false);
+        setChosenIndex([]);
+        setChosenAnswers([]);
+        setCorrectAnswerConfirmed(false);
+        setCheck(false);
+      }, 1000);
+    } else {
+      if (correctAnswers >= 6) {
+        const newArr = localLevelPassed.map((item) => {
+          if (item.name === currentQuestionType) {
+            if (item.number > levelNumber) {
+              return item;
+            }
+            return { ...item, number: item.number + 1 };
+          }
+          return item;
+        });
+        localStorage.setItem("levelPassed", JSON.stringify(newArr));
+      }
+      const m = messagesLabels.find((i) => correctAnswers >= i.id);
+      setMessages(m);
+      setGameOn(false);
+    }
   }
   const answerChose = (number, idx) => {
     const numberIndexExist = chosenIndex.some((i) => i === idx);
@@ -193,43 +231,10 @@ const Game = () => {
           Number(accumulator) + Number(currentValue),
         0
       );
-
-      //   اجابة صحيحة
-      // if (
-      //   answer ===
-      //   levelSelected.questions[currentQuestionNumber]?.question_as_number
-      // ) {
-      //   setCorrectAnswers(correctAnswers + 1);
-      // }
-
-      // if (currentQuestionNumber + 1 < levelSelected.questions?.length) {
-      //   setTimeout(() => {
-      //     goNextQuestion();
-      //   }, 500);
-      // } else {
-      //   if (correctAnswers >= 6) {
-      //     const localLevelPassed = JSON.parse(
-      //       localStorage.getItem("levelPassed")
-      //     );
-
-      //     const newArr = localLevelPassed.map((item) => {
-      //       if (item.name === currentQuestionType) {
-      //         if (item.number > levelNumber) {
-      //           return item;
-      //         }
-      //         return { ...item, number: item.number + 1 };
-      //       }
-      //       return item;
-      //     });
-      //     localStorage.setItem("levelPassed", JSON.stringify(newArr));
-      //   }
-      //   const m = messagesLabels.find((i) => correctAnswers >= i.id);
-      //   setMessages(m);
-      //   setGameOn(false);
-      // }
     }
   };
   const answerConfirmed = () => {
+    console.log("zed");
     setCheck(true);
     setPauseGame(true);
     const answer = chosenAnswers.reduce(
@@ -242,27 +247,28 @@ const Game = () => {
       setCorrectAnswerConfirmed(true);
       setCorrectAnswers(correctAnswers + 1);
     }
-    if (currentQuestionNumber + 1 < levelSelected.questions?.length) {
-      setTimeout(() => {
-        goNextQuestion();
-      }, 1000);
-    } else {
-      if (correctAnswers >= 6) {
-        const newArr = localLevelPassed.map((item) => {
-          if (item.name === currentQuestionType) {
-            if (item.number > levelNumber) {
-              return item;
-            }
-            return { ...item, number: item.number + 1 };
-          }
-          return item;
-        });
-        localStorage.setItem("levelPassed", JSON.stringify(newArr));
-      }
-      const m = messagesLabels.find((i) => correctAnswers >= i.id);
-      setMessages(m);
-      setGameOn(false);
-    }
+    goNextQuestion();
+    // if (currentQuestionNumber + 1 < levelSelected.questions?.length) {
+    //   setTimeout(() => {
+    //     goNextQuestion();
+    //   }, 1000);
+    // } else {
+    //   if (correctAnswers >= 6) {
+    //     const newArr = localLevelPassed.map((item) => {
+    //       if (item.name === currentQuestionType) {
+    //         if (item.number > levelNumber) {
+    //           return item;
+    //         }
+    //         return { ...item, number: item.number + 1 };
+    //       }
+    //       return item;
+    //     });
+    //     localStorage.setItem("levelPassed", JSON.stringify(newArr));
+    //   }
+    //   const m = messagesLabels.find((i) => correctAnswers >= i.id);
+    //   setMessages(m);
+    //   setGameOn(false);
+    // }
   };
 
   return (
@@ -276,14 +282,17 @@ const Game = () => {
       {!steady && gameOn && (
         <div className="fadeIn relative">
           <GameTimer
+            levelTimer={levelTimer}
             expiryTimestamp={gameTime}
             onTimeExpire={() => {
-              setGameOn(false);
-              setMessages({
-                labelAr: "انتهى الوقت",
-                labelEn: "Time out!",
-                timeOut: true,
-              });
+              // setGameOn(false);
+              // setMessages({
+              //   labelAr: "انتهى الوقت",
+              //   labelEn: "Time out!",
+              //   timeOut: true,
+              // });
+              console.log("zed");
+              goNextQuestion();
             }}
             currentQuestionNumber={currentQuestionNumber}
             pauseGame={pauseGame}
@@ -305,14 +314,24 @@ const Game = () => {
                   levelSelected?.questions[currentQuestionNumber]
                     ?.question_as_number
                 )})`
-                : `Two multiplied numbers equals  (${levelSelected?.questions[currentQuestionNumber]?.question_as_number})`}
+                : `${
+                    numberOfAdds === 2
+                      ? "Two multiplied numbers equals"
+                      : "three multiplied numbers equals"
+                  }    (${
+                    levelSelected?.questions[currentQuestionNumber]
+                      ?.question_as_number
+                  })`}
             </h2>
             {chosenAnswers.length === numberOfAdds && (
               <div
                 onClick={answerConfirmed}
-                className="absolute top-3 right-8 cursor-pointer animate-bounce"
+                className="fixed top-1/2 right-2 cursor-pointer z-50 "
               >
                 <img className="w-20" src={ArrowImg} alt="" />
+                <h2 className="text-slate-50 absolute top-1/2 right-1/2 -translate-y-1/2 z-50 ">
+                  {localLang == "ar" ? "التالى" : "Next"}
+                </h2>
               </div>
             )}
             <div
@@ -412,7 +431,7 @@ const Game = () => {
           <div></div>
           <div className="bg-slate-50 relative h-full flex flex-col p-4 justify-center items-center w-full shadow-lg">
             {!messages.timeOut && messages.id >= 6 && (
-              <div className="absolute - opacity-50 right-0 top-0">
+              <div className="absolute  opacity-50 right-0 top-0">
                 <img src={CongratsImg} alt="" />
               </div>
             )}
@@ -491,10 +510,10 @@ const Game = () => {
                     backgroundColor: "rgb(193,112,97)",
                   }}
                   onClick={() => {
-                    navigate("/");
+                    navigate("/levels");
                   }}
                 >
-                  الرئيسية
+                  {localLang === "ar" ? "المستويات" : "Levels"}
                 </button>
                 {messages.timeOut || messages.id < 6 ? (
                   <button
@@ -509,11 +528,14 @@ const Game = () => {
                       setCurrentQuestionNumber(0);
                       setChosenIndex([]);
                       setChosenAnswers([]);
+                      setCorrectAnswers(0);
                       setGameOn(true);
                       setSteady(true);
+                      setCorrectAnswerConfirmed(false);
+                      setPauseGame(false);
                     }}
                   >
-                    حاول مرة أخرى
+                    {localLang === "ar" ? "حاول مرة أخرى" : "Try again"}
                   </button>
                 ) : (
                   ""

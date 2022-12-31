@@ -5,12 +5,14 @@ import {
   BsFillArrowRightCircleFill,
   BsFillArrowLeftCircleFill,
 } from "react-icons/bs";
-import { shuffleQuestions } from "../../../helpers";
+import { shuffleQuestions, calculator } from "../../../helpers";
 
 import { useTimer } from "react-timer-hook";
 import Context from "../../../store/context";
 import styles from "./Addition.module.css";
 import CongratsImg from "../../../assets/images/yesCartoon.png";
+import NextPoint from "../../../assets/images/next_point.png";
+
 import ArrowImg from "../../../assets/images/arrow-right.png";
 import { ReactComponent as ClappingSvg } from "../../../assets/images/clapping.svg";
 import { ReactComponent as Dizzy } from "../../../assets/images/Dizzy face-bro.svg";
@@ -29,6 +31,9 @@ function convertToArabic(number) {
   });
   return numAr.join("");
 }
+
+console.log(calculator([3, 4], "addition"));
+console.log(calculator([3, 4], "multiplication"));
 
 function SteadyTimer({ expiryTimestamp, onTimeExpire }) {
   const { seconds } = useTimer({
@@ -51,6 +56,7 @@ function SteadyTimer({ expiryTimestamp, onTimeExpire }) {
   );
 }
 function GameTimer({
+  levelTimer,
   expiryTimestamp,
   onTimeExpire,
   currentQuestionNumber,
@@ -64,7 +70,7 @@ function GameTimer({
   const currentQuestionType = localStorage.getItem("questionType");
   useEffect(() => {
     const time = new Date();
-    time.setSeconds(time.getSeconds() + 30);
+    time.setSeconds(time.getSeconds() + levelTimer);
     restart(time);
     if (!pauseGame) {
       resume();
@@ -150,25 +156,20 @@ const Game = () => {
   if (levelSelected) {
     levelSelected.questions = shuffleQuestions(levelSelected?.questions);
   }
-  console.log("2");
+  console.log(levelSelected?.questions[currentQuestionNumber].answer);
 
   useEffect(() => {
-    async function getLevelTimer(params) {
+    async function getLevelTimer() {
       await axios
         .get(`https://albiruni.ratina.io/get_levels_time`)
         .then((res) => {
-          setLevelTimer(Number(res.data[levelSelected.name]));
-          // console.log(res.data);
-          console.log("1");
+          setLevelTimer(5);
         });
+      // Number(res.data[levelSelected.name])
     }
     getLevelTimer();
   }, []);
 
-  // console.clear();
-  // console.log(
-  //   "answer is :" + levelSelected?.questions[currentQuestionNumber].answer
-  // );
   const levelNumber = levelSelected?.name.split("_")[3] - 1;
   const numberOfAdds = levelSelected?.name.split("_").includes("3") ? 3 : 2;
 
@@ -182,59 +183,18 @@ const Game = () => {
   gameTime.setSeconds(gameTime.getSeconds() + levelTimer);
 
   function goNextQuestion() {
-    setCurrentQuestionNumber(currentQuestionNumber + 1);
-    setPauseGame(false);
-    setChosenIndex([]);
-    setChosenAnswers([]);
-    setCorrectAnswerConfirmed(false);
-    setCheck(false);
-  }
-  const answerChose = (number, idx) => {
-    const numberIndexExist = chosenIndex.some((i) => i == idx);
-
-    let chosenNumbers;
-
-    if (numberIndexExist) {
-      const newAnswers = chosenAnswers.filter((answer) => answer !== number);
-      const newIndexArr = chosenIndex.filter((i) => i !== idx);
-
-      setChosenAnswers(newAnswers);
-      setChosenIndex(newIndexArr);
-      chosenNumbers = newAnswers;
-    } else if (chosenAnswers.length !== numberOfAdds) {
-      setChosenAnswers([...chosenAnswers, number]);
-      setChosenIndex([...chosenIndex, idx]);
-      chosenNumbers = [...chosenAnswers, number];
-    }
-
-    if (chosenNumbers.length === numberOfAdds) {
-      // setPauseGame(true);
-      const answer = chosenNumbers.reduce(
-        (accumulator, currentValue) =>
-          Number(accumulator) + Number(currentValue),
-        0
-      );
-    }
-  };
-  const answerConfirmed = () => {
-    setCheck(true);
     setPauseGame(true);
-    const answer = chosenAnswers.reduce(
-      (accumulator, currentValue) => Number(accumulator) + Number(currentValue),
-      0
-    );
-    if (
-      answer ===
-      levelSelected.questions[currentQuestionNumber]?.question_as_number
-    ) {
-      setCorrectAnswerConfirmed(true);
-      setCorrectAnswers(correctAnswers + 1);
-    }
     if (currentQuestionNumber + 1 < levelSelected.questions?.length) {
       setTimeout(() => {
-        goNextQuestion();
+        setCurrentQuestionNumber(currentQuestionNumber + 1);
+        setPauseGame(false);
+        setChosenIndex([]);
+        setChosenAnswers([]);
+        setCorrectAnswerConfirmed(false);
+        setCheck(false);
       }, 1000);
     } else {
+      // تم الانتهاء من المستوى
       if (correctAnswers >= 6) {
         const newArr = localLevelPassed.map((item) => {
           if (item.name === currentQuestionType) {
@@ -247,11 +207,53 @@ const Game = () => {
         });
         localStorage.setItem("levelPassed", JSON.stringify(newArr));
       }
+      if (correctAnswers >= 6) {
+        axios
+          .post("https://albiruni.ratina.io/set_result", {
+            ...levelSelected,
+            passed: true,
+          })
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      }
       const m = messagesLabels.find((i) => correctAnswers >= i.id);
       setMessages(m);
-
       setGameOn(false);
     }
+  }
+  const answerChose = (number, idx) => {
+    const numberIndexExist = chosenIndex.some((i) => i == idx);
+
+    if (numberIndexExist) {
+      const newAnswers = chosenAnswers.filter((answer) => answer !== number);
+      const newIndexArr = chosenIndex.filter((i) => i !== idx);
+      setChosenAnswers(newAnswers);
+      setChosenIndex(newIndexArr);
+    } else if (chosenAnswers.length !== numberOfAdds) {
+      setChosenAnswers([...chosenAnswers, number]);
+      setChosenIndex([...chosenIndex, idx]);
+    }
+  };
+  const answerConfirmed = () => {
+    setCheck(true);
+    setPauseGame(true);
+    const answer = calculator(chosenAnswers, currentQuestionType);
+    if (
+      answer ===
+      levelSelected.questions[currentQuestionNumber]?.question_as_number
+    ) {
+      setCorrectAnswerConfirmed(true);
+      setCorrectAnswers(correctAnswers + 1);
+    }
+    console.log(
+      answer,
+      levelSelected.questions[currentQuestionNumber]?.question_as_number
+    );
+    goNextQuestion();
   };
 
   return (
@@ -265,14 +267,10 @@ const Game = () => {
       {!steady && gameOn && (
         <div className="fadeIn relative">
           <GameTimer
+            levelTimer={levelTimer}
             expiryTimestamp={gameTime}
             onTimeExpire={() => {
-              setGameOn(false);
-              setMessages({
-                labelAr: "انتهى الوقت",
-                labelEn: "Time out!",
-                timeOut: true,
-              });
+              goNextQuestion();
             }}
             currentQuestionNumber={currentQuestionNumber}
             pauseGame={pauseGame}
@@ -295,9 +293,12 @@ const Game = () => {
             {chosenAnswers.length === numberOfAdds && (
               <div
                 onClick={answerConfirmed}
-                className="absolute top-3 right-8 cursor-pointer animate-bounce"
+                className="fixed top-1/2 right-2 cursor-pointer z-50 "
               >
                 <img className="w-20" src={ArrowImg} alt="" />
+                <h2 className="text-slate-50 absolute top-1/2 right-1/2 -translate-y-1/2 z-50 ">
+                  {localLang == "ar" ? "التالى" : "Next"}
+                </h2>
               </div>
             )}
             <div
@@ -494,6 +495,8 @@ const Game = () => {
                       setCorrectAnswers(0);
                       setGameOn(true);
                       setSteady(true);
+                      setCorrectAnswerConfirmed(false);
+                      setPauseGame(false);
                     }}
                   >
                     حاول مرة أخرى
